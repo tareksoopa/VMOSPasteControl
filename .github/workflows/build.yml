@@ -1,4 +1,4 @@
-name: Build VMOSWebDiagnostic
+name: Build VMOSPasteFinal
 on:
   workflow_dispatch:
 jobs:
@@ -11,13 +11,13 @@ jobs:
           SDK="$(xcrun --sdk iphoneos --show-sdk-path)"
           CLANG="$(xcrun --sdk iphoneos --find clang)"
           "$CLANG" -arch arm64 -isysroot "$SDK" -miphoneos-version-min=16.0 \
-            -fobjc-arc -dynamiclib VMOSWebDiagnostic.m \
+            -fobjc-arc -dynamiclib VMOSPasteFinal.m \
             -framework UIKit -framework Foundation -framework WebKit \
-            -install_name @rpath/VMOSWebDiagnostic.dylib \
-            -o VMOSWebDiagnostic.dylib
-          codesign --force --sign - VMOSWebDiagnostic.dylib
-          file VMOSWebDiagnostic.dylib
+            -install_name @rpath/VMOSPasteFinal.dylib \
+            -o VMOSPasteFinal.dylib
+          codesign --force --sign - VMOSPasteFinal.dylib
+          file VMOSPasteFinal.dylib
       - uses: actions/upload-artifact@v4
         with:
-          name: VMOSWebDiagnostic-dylib
-          path: VMOSWebDiagnostic.dylib
+          name: VMOSPasteFinal-dylib
+          path: VMOSPasteFinal.dylib
