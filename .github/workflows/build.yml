@@ -23,7 +23,8 @@ jobs:
             -fobjc-arc \
             -dynamiclib VMOSPasteControl.m \
             -framework UIKit \
-            -framework Foundation \
+-framework Foundation \
+-framework WebKit \
             -install_name @rpath/VMOSPasteControl.dylib \
             -o VMOSPasteControl.dylib
 
