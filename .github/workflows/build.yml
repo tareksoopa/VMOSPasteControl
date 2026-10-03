@@ -1,4 +1,4 @@
-name: Build VMOSPasteFinal
+name: Build VMOSPasteFixed
 on:
   workflow_dispatch:
 jobs:
@@ -6,18 +6,18 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Build dylib
+      - name: Build
         run: |
           SDK="$(xcrun --sdk iphoneos --show-sdk-path)"
           CLANG="$(xcrun --sdk iphoneos --find clang)"
           "$CLANG" -arch arm64 -isysroot "$SDK" -miphoneos-version-min=16.0 \
-            -fobjc-arc -dynamiclib VMOSPasteFinal.m \
-            -framework UIKit -framework Foundation -framework WebKit \
-            -install_name @rpath/VMOSPasteFinal.dylib \
-            -o VMOSPasteFinal.dylib
-          codesign --force --sign - VMOSPasteFinal.dylib
-          file VMOSPasteFinal.dylib
+            -fobjc-arc -dynamiclib VMOSPasteFixed.m \
+            -framework UIKit -framework Foundation -framework WebKit -framework UniformTypeIdentifiers \
+            -install_name @rpath/VMOSPasteFixed.dylib \
+            -o VMOSPasteFixed.dylib
+          codesign --force --sign - VMOSPasteFixed.dylib
+          file VMOSPasteFixed.dylib
       - uses: actions/upload-artifact@v4
         with:
-          name: VMOSPasteFinal-dylib
-          path: VMOSPasteFinal.dylib
+          name: VMOSPasteFixed-dylib
+          path: VMOSPasteFixed.dylib
