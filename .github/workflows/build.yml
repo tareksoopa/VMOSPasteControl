@@ -1,4 +1,4 @@
-name: Build VMOSClipboardItemInspector
+name: Build VMOSAutoClipboardHidden
 on:
   workflow_dispatch:
 jobs:
@@ -11,12 +11,13 @@ jobs:
           SDK="$(xcrun --sdk iphoneos --show-sdk-path)"
           CLANG="$(xcrun --sdk iphoneos --find clang)"
           "$CLANG" -arch arm64 -isysroot "$SDK" -miphoneos-version-min=16.0 \
-            -fobjc-arc -dynamiclib VMOSClipboardItemInspector.m \
+            -fobjc-arc -dynamiclib VMOSAutoClipboardHidden.m \
             -framework UIKit -framework Foundation -framework WebKit \
-            -install_name @rpath/VMOSClipboardItemInspector.dylib \
-            -o VMOSClipboardItemInspector.dylib
-          codesign --force --sign - VMOSClipboardItemInspector.dylib
+            -install_name @rpath/VMOSAutoClipboardHidden.dylib \
+            -o VMOSAutoClipboardHidden.dylib
+          codesign --force --sign - VMOSAutoClipboardHidden.dylib
+          file VMOSAutoClipboardHidden.dylib
       - uses: actions/upload-artifact@v4
         with:
-          name: VMOSClipboardItemInspector-dylib
-          path: VMOSClipboardItemInspector.dylib
+          name: VMOSAutoClipboardHidden-dylib
+          path: VMOSAutoClipboardHidden.dylib
