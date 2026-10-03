@@ -1,4 +1,4 @@
-name: Build VMOSPasteFixed2
+name: Build VMOSClipboardItemInspector
 on:
   workflow_dispatch:
 jobs:
@@ -11,13 +11,12 @@ jobs:
           SDK="$(xcrun --sdk iphoneos --show-sdk-path)"
           CLANG="$(xcrun --sdk iphoneos --find clang)"
           "$CLANG" -arch arm64 -isysroot "$SDK" -miphoneos-version-min=16.0 \
-            -fobjc-arc -dynamiclib VMOSPasteFixed2.m \
-            -framework UIKit -framework Foundation -framework WebKit -framework UniformTypeIdentifiers \
-            -install_name @rpath/VMOSPasteFixed2.dylib \
-            -o VMOSPasteFixed2.dylib
-          codesign --force --sign - VMOSPasteFixed2.dylib
-          file VMOSPasteFixed2.dylib
+            -fobjc-arc -dynamiclib VMOSClipboardItemInspector.m \
+            -framework UIKit -framework Foundation -framework WebKit \
+            -install_name @rpath/VMOSClipboardItemInspector.dylib \
+            -o VMOSClipboardItemInspector.dylib
+          codesign --force --sign - VMOSClipboardItemInspector.dylib
       - uses: actions/upload-artifact@v4
         with:
-          name: VMOSPasteFixed2-dylib
-          path: VMOSPasteFixed2.dylib
+          name: VMOSClipboardItemInspector-dylib
+          path: VMOSClipboardItemInspector.dylib
