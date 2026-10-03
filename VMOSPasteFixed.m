@@ -112,7 +112,6 @@ static void Install(void) {
         cfg.displayMode=UIPasteControlDisplayModeIconAndLabel;
         cfg.baseBackgroundColor=[UIColor systemBlueColor];
         cfg.baseForegroundColor=[UIColor whiteColor];
-        cfg.cornerStyle=UIPasteControlCornerStyleCapsule;
 
         UIPasteControl *pc=[[UIPasteControl alloc] initWithConfiguration:cfg];
         pc.target=receiver;
