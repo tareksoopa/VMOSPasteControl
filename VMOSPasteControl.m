@@ -19,8 +19,14 @@
     NSString *type = [p hasItemConformingToTypeIdentifier:@"public.utf8-plain-text"] ? @"public.utf8-plain-text" : @"public.text";
     [p loadItemForTypeIdentifier:type options:nil completionHandler:^(id<NSSecureCoding> item, NSError *error) {
         NSString *text = nil;
-        if ([item isKindOfClass:NSString.class]) text = (NSString *)item;
-        else if ([item isKindOfClass:NSData.class]) text = [[NSString alloc] initWithData:(NSData *)item encoding:NSUTF8StringEncoding];
+        id object = (id)item;
+
+if ([object isKindOfClass:[NSString class]]) {
+    text = (NSString *)object;
+} else if ([object isKindOfClass:[NSData class]]) {
+    text = [[NSString alloc] initWithData:(NSData *)object
+                                  encoding:NSUTF8StringEncoding];
+}
         if (!text.length) return;
         dispatch_async(dispatch_get_main_queue(), ^{
             // Put the user-authorized value into the app's own pasteboard access path.
