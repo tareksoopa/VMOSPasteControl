@@ -1,32 +1,23 @@
-name: Build VMOSClipboardDiagnostic
-
+name: Build VMOSWebDiagnostic
 on:
   workflow_dispatch:
-
 jobs:
   build:
     runs-on: macos-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
       - name: Build dylib
         run: |
           SDK="$(xcrun --sdk iphoneos --show-sdk-path)"
           CLANG="$(xcrun --sdk iphoneos --find clang)"
-          "$CLANG" \
-            -arch arm64 \
-            -isysroot "$SDK" \
-            -miphoneos-version-min=16.0 \
-            -fobjc-arc \
-            -dynamiclib VMOSClipboardDiagnostic.m \
-            -framework UIKit \
-            -framework Foundation \
-            -install_name @rpath/VMOSClipboardDiagnostic.dylib \
-            -o VMOSClipboardDiagnostic.dylib
-          codesign --force --sign - VMOSClipboardDiagnostic.dylib
-          file VMOSClipboardDiagnostic.dylib
-      - name: Upload dylib
-        uses: actions/upload-artifact@v4
+          "$CLANG" -arch arm64 -isysroot "$SDK" -miphoneos-version-min=16.0 \
+            -fobjc-arc -dynamiclib VMOSWebDiagnostic.m \
+            -framework UIKit -framework Foundation -framework WebKit \
+            -install_name @rpath/VMOSWebDiagnostic.dylib \
+            -o VMOSWebDiagnostic.dylib
+          codesign --force --sign - VMOSWebDiagnostic.dylib
+          file VMOSWebDiagnostic.dylib
+      - uses: actions/upload-artifact@v4
         with:
-          name: VMOSClipboardDiagnostic-dylib
-          path: VMOSClipboardDiagnostic.dylib
+          name: VMOSWebDiagnostic-dylib
+          path: VMOSWebDiagnostic.dylib
