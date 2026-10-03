@@ -19,12 +19,12 @@ jobs:
           "$CLANG" \
             -arch arm64 \
             -isysroot "$SDK" \
-            -miphoneos-version-min=15.0 \
+            -miphoneos-version-min=16.0 \
             -fobjc-arc \
             -dynamiclib VMOSPasteControl.m \
             -framework UIKit \
--framework Foundation \
--framework WebKit \
+            -framework Foundation \
+            -framework WebKit \
             -install_name @rpath/VMOSPasteControl.dylib \
             -o VMOSPasteControl.dylib
 
@@ -34,5 +34,5 @@ jobs:
       - name: Upload dylib
         uses: actions/upload-artifact@v4
         with:
-          name: VMOSPasteControl-dylib
+          name: VMOSPasteControl-v2-dylib
           path: VMOSPasteControl.dylib
