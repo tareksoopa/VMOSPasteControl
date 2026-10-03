@@ -1,0 +1,37 @@
+name: Build VMOSPasteControl
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build dylib
+        run: |
+          SDK="$(xcrun --sdk iphoneos --show-sdk-path)"
+          CLANG="$(xcrun --sdk iphoneos --find clang)"
+
+          "$CLANG" \
+            -arch arm64 \
+            -isysroot "$SDK" \
+            -miphoneos-version-min=15.0 \
+            -fobjc-arc \
+            -dynamiclib VMOSPasteControl.m \
+            -framework UIKit \
+            -framework Foundation \
+            -install_name @rpath/VMOSPasteControl.dylib \
+            -o VMOSPasteControl.dylib
+
+          codesign --force --sign - VMOSPasteControl.dylib
+          file VMOSPasteControl.dylib
+
+      - name: Upload dylib
+        uses: actions/upload-artifact@v4
+        with:
+          name: VMOSPasteControl-dylib
+          path: VMOSPasteControl.dylib
